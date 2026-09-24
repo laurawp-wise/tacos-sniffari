@@ -207,6 +207,13 @@
 
     .found .item-icon { background: #f4dfb8; filter: none; opacity: 1; }
 
+    .item-icon canvas {
+      width: 34px;
+      height: 34px;
+      aspect-ratio: 1;
+      background: transparent;
+    }
+
     .status {
       min-height: 44px;
       margin: 18px 0 0;
@@ -332,8 +339,8 @@
         <h2>Curious finds</h2>
         <p class="collection-note">Pick each one up to add it to Taco's collection.</p>
         <ul class="collection" id="collectionList">
-          <li data-kind="bra"><span class="item-icon">👙</span><span>Mystery bra</span></li>
-          <li data-kind="shoe"><span class="item-icon">👞</span><span>Muddy shoe</span></li>
+          <li data-kind="bra"><span class="item-icon" aria-hidden="true"><canvas width="68" height="68"></canvas></span><span>Mystery bra</span></li>
+          <li data-kind="shoe"><span class="item-icon" aria-hidden="true"><canvas width="68" height="68"></canvas></span><span>Muddy shoe</span></li>
           <li data-kind="stick"><span class="item-icon">🪵</span><span>Excellent stick</span></li>
         </ul>
         <p class="status" id="status" aria-live="polite">Taco is ready for a sniff.</p>
@@ -667,45 +674,144 @@
         });
       }
 
-      function drawItem(kind, scale) {
-        ctx.save();
-        ctx.scale(scale, scale);
-        ctx.lineCap = 'round';
-        ctx.lineJoin = 'round';
+      function drawItem(kind, scale, pen = ctx) {
+        pen.save();
+        pen.scale(scale, scale);
+        pen.lineCap = 'round';
+        pen.lineJoin = 'round';
         if (kind === 'treat') {
-          ctx.fillStyle = '#c47b35';
-          ctx.beginPath();
-          ctx.roundRect(-11, -7, 22, 14, 5);
-          ctx.fill();
-          ctx.fillStyle = '#8b5126';
+          pen.fillStyle = '#c47b35';
+          pen.beginPath();
+          pen.roundRect(-11, -7, 22, 14, 5);
+          pen.fill();
+          pen.fillStyle = '#8b5126';
           [[-5, -2], [3, 3], [5, -3]].forEach(([x, y]) => {
-            ctx.beginPath(); ctx.arc(x, y, 1.6, 0, TAU); ctx.fill();
+            pen.beginPath(); pen.arc(x, y, 1.6, 0, TAU); pen.fill();
           });
         } else if (kind === 'stick') {
-          ctx.strokeStyle = '#815331';
-          ctx.lineWidth = 7;
-          ctx.beginPath();
-          ctx.moveTo(-18, 9); ctx.lineTo(17, -8); ctx.stroke();
-          ctx.lineWidth = 4;
-          ctx.beginPath(); ctx.moveTo(8, -4); ctx.lineTo(14, 4); ctx.stroke();
+          pen.strokeStyle = '#815331';
+          pen.lineWidth = 7;
+          pen.beginPath();
+          pen.moveTo(-18, 9); pen.lineTo(17, -8); pen.stroke();
+          pen.lineWidth = 4;
+          pen.beginPath(); pen.moveTo(8, -4); pen.lineTo(14, 4); pen.stroke();
         } else if (kind === 'shoe') {
-          ctx.fillStyle = '#75564b';
-          ctx.beginPath();
-          ctx.moveTo(-15, -8); ctx.quadraticCurveTo(-2, -13, 5, -4);
-          ctx.quadraticCurveTo(12, 1, 18, 6); ctx.quadraticCurveTo(15, 13, 3, 12);
-          ctx.lineTo(-15, 6); ctx.closePath(); ctx.fill();
-          ctx.strokeStyle = '#f0d8b2'; ctx.lineWidth = 2;
-          ctx.beginPath(); ctx.moveTo(-4, -5); ctx.lineTo(7, 5); ctx.stroke();
+          // A little canvas trainer: ankle opening, laces, rubber toe and muddy sole.
+          pen.fillStyle = '#b96744';
+          pen.strokeStyle = '#744932';
+          pen.lineWidth = 1.8;
+          pen.beginPath();
+          pen.moveTo(-22, 8);
+          pen.lineTo(-21, -11);
+          pen.quadraticCurveTo(-20, -16, -14, -14);
+          pen.lineTo(-7, -11);
+          pen.quadraticCurveTo(-2, -4, 7, -2);
+          pen.lineTo(16, 0);
+          pen.quadraticCurveTo(25, 2, 25, 9);
+          pen.lineTo(18, 13);
+          pen.lineTo(-18, 13);
+          pen.closePath();
+          pen.fill(); pen.stroke();
+
+          pen.fillStyle = '#4f3b2c';
+          pen.strokeStyle = '#e4b387';
+          pen.lineWidth = 2;
+          pen.beginPath(); pen.ellipse(-14, -10, 6, 3.5, 0.25, 0, TAU); pen.fill(); pen.stroke();
+
+          pen.fillStyle = '#e4b387';
+          pen.beginPath();
+          pen.moveTo(-5, -10); pen.lineTo(9, -2); pen.lineTo(4, 3); pen.lineTo(-9, -5);
+          pen.closePath(); pen.fill();
+
+          pen.fillStyle = '#fff0cf';
+          pen.beginPath();
+          pen.moveTo(15, 0); pen.quadraticCurveTo(25, 1, 25, 9);
+          pen.lineTo(12, 9); pen.quadraticCurveTo(11, 3, 15, 0);
+          pen.closePath(); pen.fill();
+
+          pen.strokeStyle = '#fff6df';
+          pen.lineWidth = 2.4;
+          [[-7, -5], [-2, -2.5], [3, 0]].forEach(([x, y]) => {
+            pen.beginPath(); pen.moveTo(x, y); pen.lineTo(x + 4, y - 3.5); pen.stroke();
+          });
+
+          pen.fillStyle = '#f8e5bd';
+          pen.strokeStyle = '#744932';
+          pen.lineWidth = 1.6;
+          pen.beginPath();
+          pen.moveTo(-23, 7); pen.quadraticCurveTo(0, 10, 25, 8);
+          pen.quadraticCurveTo(27, 14, 20, 15); pen.lineTo(-18, 15);
+          pen.quadraticCurveTo(-25, 14, -23, 7);
+          pen.closePath(); pen.fill(); pen.stroke();
+          pen.strokeStyle = '#c0a27a'; pen.lineWidth = 1;
+          pen.beginPath(); pen.moveTo(-18, 11); pen.lineTo(20, 12); pen.stroke();
+
+          pen.fillStyle = '#835435';
+          pen.beginPath(); pen.ellipse(-15, 5, 4, 2.8, -0.3, 0, TAU); pen.fill();
+          pen.beginPath(); pen.ellipse(-10, 8, 2.5, 2, 0, 0, TAU); pen.fill();
+          pen.beginPath(); pen.ellipse(9, 13, 3, 1.6, 0, 0, TAU); pen.fill();
         } else if (kind === 'bra') {
-          ctx.strokeStyle = '#d44f73';
-          ctx.fillStyle = '#ef7896';
-          ctx.lineWidth = 3;
-          ctx.beginPath(); ctx.arc(-8, 2, 8, 0, Math.PI); ctx.lineTo(-16, 2); ctx.fill(); ctx.stroke();
-          ctx.beginPath(); ctx.arc(8, 2, 8, 0, Math.PI); ctx.lineTo(0, 2); ctx.fill(); ctx.stroke();
-          ctx.beginPath(); ctx.moveTo(-16, 1); ctx.quadraticCurveTo(-15, -13, -5, -13); ctx.stroke();
-          ctx.beginPath(); ctx.moveTo(16, 1); ctx.quadraticCurveTo(15, -13, 5, -13); ctx.stroke();
+          // Mirrored cups with two complete straps, a band and a tiny centre bow.
+          pen.fillStyle = '#ce6487';
+          pen.strokeStyle = '#a84b6a';
+          pen.lineWidth = 1.6;
+          pen.beginPath(); pen.roundRect(-25, 1, 50, 8, 3); pen.fill(); pen.stroke();
+
+          [-1, 1].forEach(side => {
+            pen.save();
+            pen.scale(side, 1);
+            pen.strokeStyle = '#b85378';
+            pen.lineWidth = 2.8;
+            pen.beginPath();
+            pen.moveTo(-20, -3);
+            pen.bezierCurveTo(-24, -23, -10, -25, -8, -7);
+            pen.stroke();
+
+            pen.fillStyle = '#f08fae';
+            pen.strokeStyle = '#a84b6a';
+            pen.lineWidth = 1.6;
+            pen.beginPath();
+            pen.moveTo(-21, -4);
+            pen.bezierCurveTo(-16, -12, -9, -9, -3, -2);
+            pen.quadraticCurveTo(0, 1, 0, 5);
+            pen.bezierCurveTo(-1, 16, -20, 16, -21, 5);
+            pen.closePath(); pen.fill(); pen.stroke();
+
+            pen.strokeStyle = '#ffd6e3';
+            pen.lineWidth = 2;
+            pen.beginPath();
+            pen.moveTo(-18, -3); pen.quadraticCurveTo(-12, -8, -5, 0); pen.stroke();
+            pen.strokeStyle = '#d36c91';
+            pen.lineWidth = 1.2;
+            pen.beginPath();
+            pen.moveTo(-18, 7); pen.quadraticCurveTo(-10, 12, -4, 7); pen.stroke();
+            pen.restore();
+          });
+
+          pen.fillStyle = '#a84b6a';
+          pen.beginPath();
+          pen.moveTo(0, 3); pen.quadraticCurveTo(-7, -3, -6, 4);
+          pen.quadraticCurveTo(-5, 7, 0, 3);
+          pen.quadraticCurveTo(7, -3, 6, 4);
+          pen.quadraticCurveTo(5, 7, 0, 3);
+          pen.fill();
+          pen.fillStyle = '#ffe1ea';
+          pen.beginPath(); pen.arc(0, 3, 1.6, 0, TAU); pen.fill();
         }
-        ctx.restore();
+        pen.restore();
+      }
+
+      function drawCollectionIcons() {
+        collectionRows.forEach(row => {
+          const icon = row.querySelector('canvas');
+          if (!icon) return;
+          const pen = icon.getContext('2d');
+          pen.clearRect(0, 0, icon.width, icon.height);
+          pen.save();
+          pen.translate(icon.width / 2, icon.height / 2 + 2);
+          drawItem(row.dataset.kind, 1.15, pen);
+          pen.restore();
+        });
       }
 
       function drawScentClue() {
@@ -856,6 +962,7 @@
       playAgainButton.addEventListener('click', () => startLevel(level + 1));
       levelComplete.addEventListener('cancel', event => event.preventDefault());
 
+      drawCollectionIcons();
       startLevel();
       requestAnimationFrame(loop);
     })();
