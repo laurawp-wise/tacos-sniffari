@@ -760,6 +760,14 @@
         ctx.ellipse(2, 8, 30, 43, 0, 0, TAU);
         ctx.fill();
 
+        // Draw paws beneath the coat so only the parts beyond the body are visible.
+        if (dog.moving) {
+          ctx.fillStyle = '#aa6224';
+          const stride = reducedMotion ? 0 : Math.sin(elapsed * 13) * 5;
+          ctx.beginPath(); ctx.ellipse(-17, 20 + stride, 7, 13, 0, 0, TAU); ctx.fill();
+          ctx.beginPath(); ctx.ellipse(17, 20 - stride, 7, 13, 0, 0, TAU); ctx.fill();
+        }
+
         const coat = ctx.createLinearGradient(-25, -45, 25, 42);
         coat.addColorStop(0, '#efbd58');
         coat.addColorStop(1, '#ce812a');
@@ -796,13 +804,6 @@
         ctx.beginPath();
         ctx.arc(0, -43, 8, 0.25, Math.PI - 0.25);
         ctx.stroke();
-
-        if (dog.moving) {
-          ctx.fillStyle = '#aa6224';
-          const stride = reducedMotion ? 0 : Math.sin(elapsed * 13) * 5;
-          ctx.beginPath(); ctx.ellipse(-17, 20 + stride, 7, 13, 0, 0, TAU); ctx.fill();
-          ctx.beginPath(); ctx.ellipse(17, 20 - stride, 7, 13, 0, 0, TAU); ctx.fill();
-        }
 
         if (dog.carrying) {
           ctx.save();
