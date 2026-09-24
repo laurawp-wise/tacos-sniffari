@@ -1,0 +1,3 @@
+# The game is a single file. Only publish that file as a Cloudflare asset.
+*
+!index.html

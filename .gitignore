@@ -3,3 +3,6 @@
 .env.*
 node_modules/
 work/
+.wrangler/
+.dev.vars
+.dev.vars.*

@@ -2,7 +2,7 @@
 
 A relaxed browser game starring Taco, a golden cocker spaniel with a nose for treats and silly treasures.
 
-[Play Taco's Sniffari](https://laurawp-wise.github.io/tacos-sniffari/)
+[Play Taco's Sniffari](https://tacos-sniffari.lauraawp.workers.dev/)
 
 ## How to play
 
@@ -20,6 +20,10 @@ Open `index.html` in a browser. No Node.js, installation, build step, or server 
 
 ## Deployment
 
-GitHub Pages serves the root of the `main` branch. Pushing changes to `main` updates the game. The `.nojekyll` file keeps it a plain static site.
+Cloudflare Workers Static Assets hosts the game at the link above. `wrangler.jsonc` configures the `tacos-sniffari` deployment, and `.assetsignore` limits uploads to `index.html`.
+
+To update Cloudflare, run `wrangler deploy` from this directory using an authenticated Wrangler CLI. This is a manual deployment; pushing to GitHub alone does not update Cloudflare. The game itself still needs no Node.js or server.
+
+The [GitHub Pages mirror](https://laurawp-wise.github.io/tacos-sniffari/) serves the root of the `main` branch and updates automatically on pushes. The `.nojekyll` file keeps it a plain static site.
 
 All game code and illustrations are contained in `index.html`. The game uses no external assets or services.
